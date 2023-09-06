@@ -255,7 +255,7 @@ public:
 class Romb : public Parallelogramm {
 protected:
     bool check() override {
-        if (a == b && A == B && Parallelogramm::check()) {
+        if (a == b && Parallelogramm::check()) {
             return true;
         }
         else {
