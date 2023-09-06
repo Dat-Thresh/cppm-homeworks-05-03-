@@ -8,32 +8,7 @@ protected:
     
     int sides = 0;//количество сторон
     std::string name = "Фигура"; //имя фигуры
-    std::string status;//правильная или неправильная (зависит от значения shape при выводе информации в консоль)
-    bool shape;
-    //стороны
-    int a;
-    int b;
-    int c;
-    int d;
-    //углы
-    int A;
-    int B;
-    int C;
-    int D;
-    
-    Figure(int a, int b, int c, int d, int A, int B, int C, int D) {
-        this->a = a;
-        this->b = b;
-        this->c = c;
-        this->d = d;
-        this->A = A;
-        this->B = B;
-        this->C = C;
-        this->D = D;
-        shape = check();
-        
-
-    }
+       
     //проверка правильности базовой фигуры
     virtual bool check() {
         if (sides == 0) {
@@ -45,14 +20,10 @@ protected:
 
     }
 public:
-    Figure() :Figure(0, 0, 0, 0, 0, 0, 0, 0) {};
+    Figure(){};
     virtual void get_info() {
-        if (shape) {
-            status = "Правильная";
-        }
-        else {
-            status = "Неправильная";
-        }
+        
+        std::string status = check() ? "Правильная" : "Неправильная";//для вывода результата о проверке правильности формы
         std::cout << name << ":\n" << status << "\nКоличество сторон: " << sides << std::endl <<std::endl;
     }
 
@@ -61,6 +32,16 @@ public:
 //треугольник
 class Triangle : public Figure {
 protected:
+    //стороны
+    int a;
+    int b;
+    int c;
+    
+    //углы
+    int A;
+    int B;
+    int C;
+  
     //проверка базового треугольника
     bool check() override {
         
@@ -76,15 +57,21 @@ protected:
 public:
     //при создании базового треугольника используем конструктор базовой фигуры,
     //добавляя данные о сторонах (у треугольника 3 стороны -- логично же) и проверяя правильность формы
-    Triangle(int a, int b, int c, int A, int B, int C) :Figure(a, b, c, 0, A, B, C, 0) {
+    Triangle(int a, int b, int c, int A, int B, int C) :Figure() {
         name = "Треугольник";
         sides = 3;
-        shape = check();
+        this->a = a;
+        this->b = b;
+        this->c = c;
+        this->A = A;
+        this->B = B;
+        this->C = C;
     };
 
 
     void get_info() override {
-        if (shape) {
+        std::string status;
+        if (check()) {
             status = "Правильная";
         }
         else {
@@ -103,6 +90,16 @@ public:
 //четырехугольник
 class Quadrangle :public Figure {
 protected:
+    //стороны
+    int a;
+    int b;
+    int c;
+    int d;
+    //углы
+    int A;
+    int B;
+    int C;
+    int D;
     //проверка правильности формы базового четырехугольника
      bool check() override {
         if ((A + B + C + D == 360)&&(sides == 4)) {
@@ -116,13 +113,21 @@ protected:
 public:
     //при создании экземпляра четырехугольника используем конструктор базовой фигуры,
     //передавая при этом инфу о сторонах(четырехгольник -> четыре стороны) и проверяя правильность формы
-    Quadrangle(int a, int b, int c, int d, int A, int B, int C, int D) :Figure(a, b, c, d, A, B, C, D) {
+    Quadrangle(int a, int b, int c, int d, int A, int B, int C, int D) :Figure() {
         name = "Четырехугольник";
         sides = 4;
-        shape = check();
+        this->a = a;
+        this->b = b;
+        this->c = c;
+        this->d = d;
+        this->A = A;
+        this->B = B;
+        this->C = C;
+        this->D = D;
     }
     void get_info() override {
-        if (shape) {
+        std::string status;
+        if (check()) {
             status = "Правильная";
         }
         else {
@@ -153,7 +158,6 @@ protected:
 public:
     Triangle_C_90(int a, int b, int c, int A, int B) :Triangle(a, b, c, A, B, 90) {
         name = "Прямоугольный треугольник";
-        shape = check();
     };
 
 };
@@ -171,8 +175,7 @@ protected:
     }
 public:
     Triangle_bedra_ravny(int a, int b, int A, int B) : Triangle(a, b, a, A, B, A) {
-        name = "Равнобедренный треугольник";
-        shape = check();
+        name = "Равнобедренный треугольник";        
     };
 };
 
@@ -191,8 +194,7 @@ protected:
     }
 public:
     Triangle_all_sides_equal(int a) : Triangle_bedra_ravny(a, a, 60, 60) {
-        name = "Равносторонний треугольник";
-        shape = check();
+        name = "Равносторонний треугольник";       
     };
 
 };
@@ -210,8 +212,7 @@ protected:
     }
 public:
     Parallelogramm(int a, int b, int A, int B) : Quadrangle(a, b, a, b, A, B, A, B) {
-        name = "Параллелограмм";
-        shape = check();
+        name = "Параллелограмм";        
     };
 };
 
@@ -228,8 +229,7 @@ protected:
     }
 public:
     Quadrangle_all_corners_90(int a, int b) : Parallelogramm(a, b, 90, 90) {
-        name = "Прямоугольник";
-        shape = check();
+        name = "Прямоугольник";       
     };
 
 };
@@ -247,8 +247,7 @@ protected:
     }
 public:
     Square(int a) :Quadrangle_all_corners_90(a, a) {
-        name = "Квадрат";
-        shape = check();
+        name = "Квадрат";     
     };
 };
 
@@ -265,8 +264,7 @@ protected:
     }
 public:
     Romb(int a, int A, int B) :Parallelogramm(a, a, A, B) {
-        name = "Ромб";
-        shape = check();
+        name = "Ромб";     
     };
 };
 
